@@ -15,10 +15,11 @@ db.once('open', () => {
 })
 
 app.engine('handlebars', engine({defaultLayout: 'main'}))
-app.set('view engine', 'hand;ebars')
+app.set('view engine', 'handlebars')
+app.use(express.static('public'))
 
 app.get('/', (req, res) => {
-  res.send('index')
+  res.render('index')
 })
 
 app.listen(port, () => {
