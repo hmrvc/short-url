@@ -16,10 +16,16 @@ db.once('open', () => {
 
 app.engine('handlebars', engine({defaultLayout: 'main'}))
 app.set('view engine', 'handlebars')
-app.use(express.static('public'))
+app.use(express.urlencoded({ extended: true }))
+
 
 app.get('/', (req, res) => {
   res.render('index')
+})
+
+app.post('/', (req, res) => {
+  const url = req.body.url
+  console.log(url)
 })
 
 app.listen(port, () => {
