@@ -1,6 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const {engine} = require('express-handlebars')
+const database = require('./models/shorturl')
 const app = express()
 
 const port = 3000
@@ -38,7 +39,9 @@ app.post('/', (req, res) => {
     result += choosenChar
   } 
   console.log(result)
+  database.create({ shortenUrl: result, url})
 })
+
 
 app.listen(port, () => {
   console.log('connect')
