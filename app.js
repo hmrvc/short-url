@@ -56,6 +56,16 @@ app.post('/', (req, res) => {
     })  
 })
 
+//新增縮網址的路由
+app.get('/:shortenUrl', (req, res) => {
+  const short = req.params.shortenUrl
+  database.findOne({shortenUrl:  short})
+    .lean()
+    .then(item => {
+      res.redirect(item.url)
+    })
+})
+
 
 app.listen(port, () => {
   console.log('connect')
