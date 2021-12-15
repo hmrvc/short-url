@@ -26,7 +26,9 @@ app.get('/', (req, res) => {
 
 app.post('/', (req, res) => {
   const url = req.body.url
-  console.log(url)
+  //沒輸入網址則不動作
+  if (! url) return res.redirect('/')
+  
 //產生五碼亂數字元
   const CHARLIST = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
   const CHARNUM = CHARLIST.length
@@ -38,8 +40,20 @@ app.post('/', (req, res) => {
     let choosenChar = CHARLIST[choosenIndex]
     result += choosenChar
   } 
-  console.log(result)
-  database.create({ shortenUrl: result, url})
+
+  const shortUrl = result
+  // //輸入網址是否已存在 回傳第一個符合條件的結果
+  database.findOne({url: url})
+    .then(item => 
+      item ? item: database.create({ shortenUrl: shortUrl, url})
+    )
+    .then(item => {
+      res.render('index', {
+        a: req.headers.origin,
+        b: item.shortenUrl,
+        url
+      }) 
+    })  
 })
 
 

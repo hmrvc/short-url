@@ -1,8 +1,15 @@
 <form action='/' method='POST'>
   <div class="mb-3" >
     <label for="url" class="form-label">Url</label>
-    <input type="url" name="url" class="form-control" id="url" aria-describedby="urlHelp">
+    <input type="url" name="url" class="form-control" id="url" aria-describedby="urlHelp" value={{url}}>
     <div id="urlHelp" class="form-text">Please input the url.</div>
   </div>
   <button type="submit" class="btn btn-primary">Shorten</button>
 </form>
+
+{{#if url}}
+<div>  
+  <p>This is shorten Url</p>
+  <p>{{a}}/{{b}}</p>
+</div>
+{{/if}}
