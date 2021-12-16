@@ -8,7 +8,11 @@
 
 {{#if url}}
 <div>  
-  <h3>Success! Please use this link:</h3>
+  <h3><strong>Success! Please use this link:</strong></h3>
   <p>{{header}}/{{shorten}}</p>
 </div>
+{{/if}}
+
+{{#if error}}
+<h4 class="text-danger">This Url is unfound! Please check again</h4>
 {{/if}}

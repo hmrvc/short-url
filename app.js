@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const {engine} = require('express-handlebars')
 const database = require('./models/shorturl')
+const generateUrl = require('./shortener')
 const app = express()
 
 const port = 3000
@@ -30,19 +31,8 @@ app.post('/', (req, res) => {
   if (! url) return res.redirect('/')
   
 //產生五碼亂數字元
-  const CHARLIST = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-  const CHARNUM = CHARLIST.length
-  const TARGETNUM = 5
-
-  let result = ''
-  for (let i = 0; i < TARGETNUM; i++) {
-    let choosenIndex = Math.floor(Math.random() * CHARNUM)
-    let choosenChar = CHARLIST[choosenIndex]
-    result += choosenChar
-  } 
-
-  const shortUrl = result
-  // //輸入網址是否已存在 回傳第一個符合條件的結果
+  const shortUrl = generateUrl(5)
+//輸入網址是否已存在 回傳第一個符合條件的結果
   database.findOne({url: url})
     .then(item => 
       item ? item: database.create({ shortenUrl: shortUrl, url})
@@ -53,7 +43,8 @@ app.post('/', (req, res) => {
         shorten: item.shortenUrl,
         url
       }) 
-    })  
+    })
+    .catch(error => console.log(error))  
 })
 
 //新增縮網址的路由
@@ -64,8 +55,10 @@ app.get('/:shortenUrl', (req, res) => {
     .then(item => {
       res.redirect(item.url)
     })
+    .catch(error => {
+      res.render('index', {error})
+    })
 })
-
 
 app.listen(port, () => {
   console.log('connect')
