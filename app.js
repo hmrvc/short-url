@@ -49,8 +49,8 @@ app.post('/', (req, res) => {
     )
     .then(item => {
       res.render('index', {
-        a: req.headers.origin,
-        b: item.shortenUrl,
+        header: req.headers.origin,
+        shorten: item.shortenUrl,
         url
       }) 
     })  
